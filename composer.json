@@ -1,0 +1,32 @@
+{
+    "name" : "los/losuser",
+    "description" : "LosUser provides a basic user class for login",
+    "require" : {
+        "php" : ">=5.4.0",
+        "zendframework/zendframework" : ">=2.3.2,<3.0.0",
+        "doctrine/doctrine-orm-module": "~0.8",
+        "los/losbase": "dev-master"
+    },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master"
+    },
+    "authors" : [ 
+        {
+            "name" : "Leandro Silva",
+            "email" : "leandro@leandrosilva.info",
+            "homepage" : "http://leandrosilva.info"
+        } 
+    ],
+    "keywords" : [ "los", "user", "login", "module", "zf2" ],
+    "autoload" : {
+        "psr-4" : {
+          "LosUser\\" : "src/"
+        },
+        "classmap" : [ "./" ]
+    },
+    "suggest" : {
+    },
+    "license" : "BSD-3-Clause",
+    "type" : "library",
+    "homepage" : "http://github.com/Lansoweb/LosUser"
+}
