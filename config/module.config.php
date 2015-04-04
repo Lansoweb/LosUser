@@ -12,7 +12,7 @@ return array(
                 'type' => 'Literal',
                 'priority' => 1000,
                 'options' => array(
-                    'route' => '/losuser',
+                    'route' => '/user',
                     'defaults' => array(
                         'controller' => 'LosUser',
                         'action'     => 'index',

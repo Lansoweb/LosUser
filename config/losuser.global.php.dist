@@ -1,0 +1,18 @@
+<?php
+return [
+    'losuser' => [
+
+        //'user_entity_class' => 'User\Entity\User',
+
+        //'enable_username' => false,
+
+        // 'identity_fields' => array( 'username' ),
+
+        //'use_redirect' => true,
+
+        //'login_redirect_route' => 'losuser',
+
+        //'logout_redirect_route' => 'losuser/login'
+    ]
+
+];
