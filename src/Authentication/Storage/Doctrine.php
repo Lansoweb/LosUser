@@ -3,10 +3,10 @@
 namespace LosUser\Authentication\Storage;
 
 use Zend\Authentication\Storage;
-use Zend\Authentication\Storage\StorageInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use LosBase\Entity\EntityManagerAwareTrait;
+use Doctrine\ORM\UnitOfWork;
 
 class Doctrine implements Storage\StorageInterface, ServiceLocatorAwareInterface
 {
@@ -41,6 +41,8 @@ class Doctrine implements Storage\StorageInterface, ServiceLocatorAwareInterface
 
         if (is_int($identity) || is_scalar($identity)) {
             $identity = $this->getEntityManager()->find($identity);
+        } elseif ($this->getEntityManager()->getUnitOfWork()->getEntityState($identity) === UnitOfWork::STATE_DETACHED) {
+            $identity = $this->getEntityManager()->merge($identity);
         }
 
         if ($identity) {
@@ -67,7 +69,8 @@ class Doctrine implements Storage\StorageInterface, ServiceLocatorAwareInterface
     public function getStorage()
     {
         if (null === $this->storage) {
-            $this->setStorage(new Storage\Session());
+            //$this->setStorage(new Storage\Session());
+            $this->setStorage(new Storage\Session('Zend_Auth'));
         }
 
         return $this->storage;

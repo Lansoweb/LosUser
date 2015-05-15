@@ -67,12 +67,12 @@ class Doctrine implements AdapterInterface, ServiceLocatorAwareInterface
             return new AuthenticationResult(AuthenticationResult::FAILURE_CREDENTIAL_INVALID, null);
         }
 
-        $session = new SessionContainer($this->getStorage()->getNameSpace());
-        $session->getManager()->regenerateId();
+        //$session = new SessionContainer($this->getStorage()->getNameSpace());
+        //$session->getManager()->regenerateId();
 
-        $storage = $this->getStorage()->read();
-        $storage['identity'] = $user;
-        $this->getStorage()->write($storage);
+        //$storage = $this->getStorage()->read();
+        //$storage['identity'] = $user;
+        //$this->getStorage()->write($storage);
 
         return new AuthenticationResult(AuthenticationResult::SUCCESS, $user);
     }
@@ -107,7 +107,8 @@ class Doctrine implements AdapterInterface, ServiceLocatorAwareInterface
     public function getStorage()
     {
         if (null === $this->storage) {
-            $this->setStorage(new Storage\Session(get_class($this)));
+            //$this->setStorage(new Storage\Session(get_class($this)));
+            $this->setStorage(new Storage\Session('Zend_Auth'));
         }
 
         return $this->storage;
