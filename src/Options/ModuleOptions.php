@@ -10,6 +10,8 @@ class ModuleOptions extends AbstractOptions implements ControllerOptionsInterfac
 
     protected $useRedirect = true;
 
+    protected $loginRoute = 'losuser/login';
+
     protected $loginRedirectRoute = 'losuser';
 
     protected $logoutRedirectRoute = 'losuser/login';
@@ -21,6 +23,18 @@ class ModuleOptions extends AbstractOptions implements ControllerOptionsInterfac
     protected $userEntityClass = 'LosUser\Entity\User';
 
     protected $enableUsername = false;
+
+    public function setLoginRoute($loginRoute)
+    {
+        $this->loginRoute = $loginRoute;
+
+        return $this;
+    }
+
+    public function getLoginRoute()
+    {
+        return $this->loginRoute;
+    }
 
     public function setLoginRedirectRoute($loginRedirectRoute)
     {

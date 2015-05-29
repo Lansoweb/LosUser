@@ -20,7 +20,7 @@ class UserController extends AbstractCrudController
     public function indexAction()
     {
         if (! $this->losUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('losuser/login');
+            return $this->redirect()->toRoute($this->getOptions()->getLoginRoute());
         }
 
         return new ViewModel();
@@ -30,7 +30,7 @@ class UserController extends AbstractCrudController
     {
         if ($this->losUserAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute($this->getOptions()
-                ->getLoginRedirectRoute());
+                ->getLoginRedirectRoute(),[],[],true);
         }
 
         $request = $this->getRequest();
@@ -57,7 +57,7 @@ class UserController extends AbstractCrudController
                 ->addMessage($this->translate('Invalid username or password.'));
 
             return $this->redirect()->toUrl($this->url()
-                ->fromRoute('losuser/login').($redirect ? '?redirect='.rawurlencode($redirect) : ''));
+                ->fromRoute($this->getOptions()->getLoginRoute()).($redirect ? '?redirect='.rawurlencode($redirect) : ''),[],[],true);
         }
 
         $this->losUserAuthentication()
@@ -73,7 +73,7 @@ class UserController extends AbstractCrudController
     {
         if ($this->losUserAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute($this->getOptions()
-                ->getLoginRedirectRoute());
+                ->getLoginRedirectRoute(),[],[],true);
         }
 
         $adapter = $this->losUserAuthentication()->getAuthAdapter();
@@ -97,7 +97,7 @@ class UserController extends AbstractCrudController
                 ->addMessage($this->translate('Invalid login/password.'));
 
             return $this->redirect()->toUrl($this->url()
-                ->fromRoute('losuser/login').($redirect ? '?redirect='.rawurlencode($redirect) : ''));
+                ->fromRoute($this->getOptions()->getLoginRoute()).($redirect ? '?redirect='.rawurlencode($redirect) : ''),[],[],true);
         }
 
         if ($redirect) {
@@ -106,7 +106,7 @@ class UserController extends AbstractCrudController
 
         return $this->redirect()->toUrl($this->url()
             ->fromRoute($this->getOptions()
-            ->getLoginRedirectRoute()));
+            ->getLoginRedirectRoute(),[],[],true));
     }
 
     public function logoutAction()
@@ -120,7 +120,7 @@ class UserController extends AbstractCrudController
 
         return $this->redirect()->toUrl($this->url()
             ->fromRoute($this->getOptions()
-            ->getLogoutRedirectRoute()));
+            ->getLogoutRedirectRoute(),[],[],true));
     }
 
     private function translate($msg)

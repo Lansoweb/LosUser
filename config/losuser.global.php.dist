@@ -6,9 +6,11 @@ return [
 
         //'enable_username' => false,
 
-        // 'identity_fields' => array( 'username' ),
+        //'identity_fields' => ['username'],
 
         //'use_redirect' => true,
+        
+        //'login_route' => 'losuser/login',
 
         //'login_redirect_route' => 'losuser',
 
