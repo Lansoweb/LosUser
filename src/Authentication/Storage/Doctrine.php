@@ -38,9 +38,11 @@ class Doctrine implements Storage\StorageInterface, ServiceLocatorAwareInterface
         }
 
         $identity = $this->getStorage()->read();
+        $options = $this->getServiceLocator()->get('losuser_module_options');
+        $userClass = $options->getUserEntityClass();
 
         if (is_int($identity) || is_scalar($identity)) {
-            $identity = $this->getEntityManager()->find($identity);
+            $identity = $this->getEntityManager()->find($userClass, $identity);
         } elseif ($this->getEntityManager()->getUnitOfWork()->getEntityState($identity) === UnitOfWork::STATE_DETACHED) {
             $identity = $this->getEntityManager()->merge($identity);
         }
