@@ -11,8 +11,10 @@ use LosBase\Entity\EntityManagerAwareTrait;
 use Zend\Authentication\Adapter\AdapterInterface;
 use LosUser\Options\IdentityOptionsInterface;
 use Zend\Authentication\Storage;
+use LosBase\EventManager\EventProvider;
+use Zend\EventManager\Event;
 
-class Doctrine implements AdapterInterface, ServiceLocatorAwareInterface
+class Doctrine extends EventProvider implements AdapterInterface, ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait, EntityManagerAwareTrait;
 
@@ -57,13 +59,20 @@ class Doctrine implements AdapterInterface, ServiceLocatorAwareInterface
             }
         }
 
+        $e = new AdapterEvent();
+        $e->setTarget($this);
+
         if (! $user) {
+            $e->setCode(AuthenticationResult::FAILURE_IDENTITY_NOT_FOUND);
+            $this->getEventManager()->trigger('authenticate.fail', $e);
             return new AuthenticationResult(AuthenticationResult::FAILURE_IDENTITY_NOT_FOUND, null);
         }
 
         $bcrypt = new Bcrypt();
         $bcrypt->setCost(14);
         if (! $bcrypt->verify($this->password, $user->getPassword())) {
+            $e->setCode(AuthenticationResult::FAILURE_CREDENTIAL_INVALID);
+            $this->getEventManager()->trigger('authenticate.fail', $e);
             return new AuthenticationResult(AuthenticationResult::FAILURE_CREDENTIAL_INVALID, null);
         }
 
@@ -74,6 +83,8 @@ class Doctrine implements AdapterInterface, ServiceLocatorAwareInterface
         //$storage['identity'] = $user;
         //$this->getStorage()->write($storage);
 
+        $e->setCode(AuthenticationResult::SUCCESS)->setIdentity($user);
+        $this->getEventManager()->trigger('authenticate.success', $e);
         return new AuthenticationResult(AuthenticationResult::SUCCESS, $user);
     }
 
