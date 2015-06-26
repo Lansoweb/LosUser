@@ -5,7 +5,7 @@
         "php" : ">=5.4.0",
         "zendframework/zendframework" : ">=2.3.2,<3.0.0",
         "doctrine/doctrine-orm-module": "~0.8",
-        "los/losbase": "dev-master"
+        "los/losbase": "~2.5"
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master"
