@@ -54,7 +54,7 @@ class UserController extends AbstractCrudController
         if (! $form->isValid()) {
             $this->flashMessenger()
                 ->setNamespace('losuser-login-form')
-                ->addMessage($this->translate('Invalid username or password.'));
+                ->addMessage('Invalid username or password.');
 
             return $this->redirect()->toUrl($this->url()
                 ->fromRoute($this->getOptions()->getLoginRoute()).($redirect ? '?redirect='.rawurlencode($redirect) : ''),[],[],true);
@@ -94,7 +94,7 @@ class UserController extends AbstractCrudController
         if (! $result->isValid()) {
             $this->flashMessenger()
                 ->setNamespace('losuser-login-form')
-                ->addMessage($this->translate('Invalid login/password.'));
+                ->addMessage('Invalid login/password.');
 
             return $this->redirect()->toUrl($this->url()
                 ->fromRoute($this->getOptions()->getLoginRoute()).($redirect ? '?redirect='.rawurlencode($redirect) : ''),[],[],true);
@@ -123,7 +123,7 @@ class UserController extends AbstractCrudController
             ->getLogoutRedirectRoute(),[],[],true));
     }
 
-    private function translate($msg)
+    public function translate($msg)
     {
         return $msg;
     }
