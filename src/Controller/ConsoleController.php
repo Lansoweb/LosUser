@@ -62,10 +62,8 @@ class ConsoleController extends AbstractActionController
             $usuario->setNome($nome);
             $usuario->setPermissao($permissao == 1 ? 'usuario' : 'admin');
 
-            $options = $this->getServiceLocator()->get('zfcuser_module_options');
-
             $bcrypt = new Bcrypt();
-            $bcrypt->setCost($options->getPasswordCost());
+            $bcrypt->setCost(14);
             $usuario->setPassword($bcrypt->create($senha));
 
             $this->getEntityManager()->persist($usuario);
@@ -108,10 +106,9 @@ class ConsoleController extends AbstractActionController
         }
 
         if (Confirm::prompt('Confirma a alteração da senha? [y/n] ', 'y', 'n')) {
-            $options = $this->getServiceLocator()->get('zfcuser_module_options');
 
             $bcrypt = new Bcrypt();
-            $bcrypt->setCost($options->getPasswordCost());
+            $bcrypt->setCost(14);
             $usuario->setPassword($bcrypt->create($senha));
 
             $this->getEntityManager()->persist($usuario);
