@@ -76,16 +76,9 @@ class Doctrine extends EventProvider implements AdapterInterface, ServiceLocator
             return new AuthenticationResult(AuthenticationResult::FAILURE_CREDENTIAL_INVALID, null);
         }
 
-        //$session = new SessionContainer($this->getStorage()->getNameSpace());
-        //$session->getManager()->regenerateId();
-
-        //$storage = $this->getStorage()->read();
-        //$storage['identity'] = $user;
-        //$this->getStorage()->write($storage);
-
         $e->setCode(AuthenticationResult::SUCCESS)->setIdentity($user);
         $this->getEventManager()->trigger('authenticate.success', $e);
-        return new AuthenticationResult(AuthenticationResult::SUCCESS, $user);
+        return new AuthenticationResult(AuthenticationResult::SUCCESS, $user->getId());
     }
 
     protected function updateUserPasswordHash($userObject, $password, $bcrypt)
@@ -118,8 +111,7 @@ class Doctrine extends EventProvider implements AdapterInterface, ServiceLocator
     public function getStorage()
     {
         if (null === $this->storage) {
-            //$this->setStorage(new Storage\Session(get_class($this)));
-            $this->setStorage(new Storage\Session('Zend_Auth'));
+            $this->setStorage(new Storage\Session);
         }
 
         return $this->storage;

@@ -14,8 +14,6 @@ class Doctrine implements Storage\StorageInterface, ServiceLocatorAwareInterface
 
     protected $storage;
 
-    protected $resolvedIdentity;
-
     public function isEmpty()
     {
         if ($this->getStorage()->isEmpty()) {
@@ -33,46 +31,33 @@ class Doctrine implements Storage\StorageInterface, ServiceLocatorAwareInterface
 
     public function read()
     {
-        if (null !== $this->resolvedIdentity) {
-            return $this->resolvedIdentity;
-        }
-
         $identity = $this->getStorage()->read();
-        $options = $this->getServiceLocator()->get('losuser_module_options');
-        $userClass = $options->getUserEntityClass();
 
         if (is_int($identity) || is_scalar($identity)) {
+            $options = $this->getServiceLocator()->get('losuser_module_options');
+            $userClass = $options->getUserEntityClass();
             $identity = $this->getEntityManager()->find($userClass, $identity);
         } elseif ($this->getEntityManager()->getUnitOfWork()->getEntityState($identity) === UnitOfWork::STATE_DETACHED) {
             $identity = $this->getEntityManager()->merge($identity);
         }
 
-        if ($identity) {
-            $this->resolvedIdentity = $identity;
-        } else {
-            $this->resolvedIdentity = null;
-        }
-
-        return $this->resolvedIdentity;
+        return $identity;
     }
 
-    public function write($contents)
+    public function write($identity)
     {
-        $this->resolvedIdentity = null;
-        $this->getStorage()->write($contents);
+        $this->getStorage()->write($identity);
     }
 
     public function clear()
     {
-        $this->resolvedIdentity = null;
         $this->getStorage()->clear();
     }
 
     public function getStorage()
     {
         if (null === $this->storage) {
-            //$this->setStorage(new Storage\Session());
-            $this->setStorage(new Storage\Session('Zend_Auth'));
+            $this->setStorage(new Storage\Session);
         }
 
         return $this->storage;
